@@ -1,0 +1,56 @@
+#include "H/SC92F725x_C.H"
+#include "H/Function_Init.H"
+
+unsigned int times = 0;
+
+void delay_s(unsigned int time)
+{
+	times = time;
+	while(times > 0)
+	{
+		WDTCON |= 0x10;
+	}
+}
+
+char putchar(char c)
+{
+	SBUF =  c ;
+    while(!TI);
+	TI = 0;
+	EUART = 1;
+    return c;
+}
+
+void main(void)
+{
+	IO_Init();
+	BTM_Init();
+	Uart0_Init();
+//	WDT_Init();
+	while(1)
+	{
+//		WDTCON |= 0x10;		    //Çå¿´ÃÅ¹·	
+		if (0 == P20)
+		{	
+			delay_s(1);
+		if(ADC_Test()>3.65 && 0 == P20 && 0 == P21)
+		{
+//			printf("bt:%f\n",ADC_Test());
+			P26 = 1;
+			delay_s(2*4);
+			P26 = 0;
+		}
+		}
+		else if (1 == P20)
+		{	
+			delay_s(1);
+		if(1 == P20 && 1 == P21)
+		{
+			P26 = 1;
+			delay_s(8*4);
+			P26 = 0;
+		}
+		}
+		delay_s(1);
+	}
+}
