@@ -26,8 +26,9 @@ void main(void)
 {
     IO_Init();
     BTM_Init();
-    Uart0_Init();
+//    Uart0_Init();
 //	WDT_Init();
+	P13 = 0;
     while(1)
     {
 		WDTCON |= 0x10;		    //Çå¿´ÃÅ¹·
@@ -49,7 +50,7 @@ void main(void)
             if(1 == P20)
             {
                 P26 = 1;
-                delay_s(9*4);
+                delay_s(12*4);
                 P26 = 0;
 //				delay_s(6*4);
 				P13 = 1;
@@ -59,6 +60,10 @@ void main(void)
 		if(ADC_RESP() > 1.0) 
 		{
 			P13 = 1;
+		}
+		else
+		{
+			P13 = 0;
 		}
     }
 }
