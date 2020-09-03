@@ -1,6 +1,7 @@
 #include "H/Function_Init.H"
 
 extern unsigned int times;
+extern volatile unsigned int counter;
 void BTM_Init(void);
 
 
@@ -35,5 +36,6 @@ void BTM_Int(void) interrupt 9
 {
 	if(times > 0)
 		times--;
+	counter++;
 	
 }

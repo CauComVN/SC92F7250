@@ -2,6 +2,7 @@
 #include "H/Function_Init.H"
 
 unsigned int times = 0;
+volatile unsigned int counter = 0; 
 
 void delay_s(unsigned int time)
 {
@@ -28,6 +29,7 @@ void main(void)
     BTM_Init();
 //    Uart0_Init();
 //	WDT_Init();
+	EX_Init();
 	P13 = 0;
     while(1)
     {
@@ -35,14 +37,17 @@ void main(void)
         if (0 == P20 && ADC_RESP() < 1.0)
         {
             delay_s(1);
-            if(ADC_BAT()>3.5)
+			if(0 == P20)
             {
+				if(ADC_BAT()>3.5)
+				{
 //			printf("bt:%f\n",ADC_Test());
-				P13 = 1;
-                P26 = 1;
-                delay_s(4*4);
-                P26 = 0;
-            }
+					P13 = 1;
+					P26 = 1;
+					delay_s(3*4);
+					P26 = 0;
+				}
+			}
         }
         else if (1 == P20 && ADC_RESP() > 1.0)
         {
@@ -50,13 +55,12 @@ void main(void)
             if(1 == P20)
             {
                 P26 = 1;
-                delay_s(12*4);
+                delay_s(4*4);
                 P26 = 0;
 //				delay_s(6*4);
 				P13 = 1;
             }
-        }
-		delay_s(1);		
+        }	
 		if(ADC_RESP() > 1.0) 
 		{
 			P13 = 1;
@@ -65,5 +69,20 @@ void main(void)
 		{
 			P13 = 0;
 		}
+		if(counter > 200)
+		{
+			PCON |= 0x02;
+			_nop_();
+			_nop_();
+			_nop_();
+			_nop_();
+			_nop_();
+			_nop_();
+			_nop_();
+			_nop_();
+			_nop_();
+			_nop_();
+		}
+//		delay_s(4);	
     }
 }
