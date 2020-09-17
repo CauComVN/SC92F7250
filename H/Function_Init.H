@@ -15,6 +15,7 @@ extern void BTM_Init(void);
 extern void Uart0_Init(void);
 extern float ADC_BAT(void);
 extern float ADC_RESP(void);
+void EX_Init(void);
 
 
 /*****************************************
